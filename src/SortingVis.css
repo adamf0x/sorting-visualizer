@@ -1,0 +1,12 @@
+.container{
+    text-align: center;
+}
+.bar{
+    border-radius: 50%;
+    display: inline-block;
+    width: 6px;
+    background-color: turquoise;
+    color: transparent;
+    margin: 0 3px;
+    overflow: hidden;
+}

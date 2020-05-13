@@ -5,15 +5,3 @@
   justify-content: space-around;
   min-width: 100vh;
 }
-
-.tweet{
-  border: 2px solid black;
-  height: 300px;
-  width: 300px;
-  border-radius: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  background-color: aqua;
-}

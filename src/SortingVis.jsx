@@ -31,10 +31,6 @@ export class SortingVis extends React.Component {
       for (let j = 0; j < i; j++) {
         setTimeout(()=>{
         if (arr[i] < arr[j]) {
-          let ball1 = document.getElementById(i);
-          let ball2 = document.getElementById(j);
-          ball1.style.backgroundColor = "red";
-          ball2.style.backgroundColor = "red";
           let temp = arr[i];
           arr[i] = arr[j];
           arr[j] = temp;

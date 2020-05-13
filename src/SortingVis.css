@@ -2,11 +2,11 @@
     text-align: center;
 }
 .bar{
-    border-radius: 50%;
+    border-radius: 30px;
     display: inline-block;
-    width: 6px;
-    background-color: turquoise;
+    width: 20px;
     color: transparent;
+    background-color: turquoise;
     margin: 0 3px;
     overflow: hidden;
 }

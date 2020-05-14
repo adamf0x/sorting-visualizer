@@ -2,6 +2,8 @@ import React from "react";
 import "./App.css";
 import "./SortingVis.css";
 import { bubbleSortAnimations } from "./GetBubbleSortAnimations";
+var numBars = 100;
+var barWidth = Math.floor(1000 * (1 / numBars));
 
 export class SortingVis extends React.Component {
   constructor(props) {
@@ -16,10 +18,10 @@ export class SortingVis extends React.Component {
     this.generateArray();
   }
   generateArray() {
-    var max = 500;
+    var max = numBars*2;
     var min = 10;
     var arr = [];
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < numBars; i++) {
       arr.push(Math.floor(Math.random() * (max - min + 1) + min));
     }
     this.setState({ array: arr });
@@ -28,23 +30,12 @@ export class SortingVis extends React.Component {
   bubbleSort() {
     const animations = bubbleSortAnimations(this.state.array);
     const elems = document.getElementsByClassName("bar");
-    /*
-    for (let i = 0; i < animations.length; i++) {
-      setTimeout(() => {
-        var swapAnimation = animations[i].swap;
-        var bar1 = elems[animations[i].compare[0]]
-        var bar2 = elems[animations[i].compare[1]]
-        if(swapAnimation == true){
-          var temp = bar1.style.height;
-          bar1.style.height = bar2.style.height;
-          bar2.style.height = temp;
-        }else{
-          bar1.style.backgroundColor = "red"
-          bar2.style.backgroundColor = "red"
-        }
-      }, i*30);
+    var animationTriplets = [];
+    for (var animation of animations) {
+      animationTriplets.push(animation.compare);
+      animationTriplets.push(animation.compare);
+      animationTriplets.push(animation.swap);
     }
-    */
     for (let i = 0; i < animations.length; i++) {
       if (animations[i].swap === true) {
         setTimeout(() => {
@@ -56,15 +47,14 @@ export class SortingVis extends React.Component {
           bar1.style.backgroundColor = "red";
           bar2.style.backgroundColor = "red";
         }, i * 2);
-        setTimeout(()=>{
-          var bar1 = elems[animations[i].compare[0]];
-          var bar2 = elems[animations[i].compare[1]];
-          bar1.style.backgroundColor = "turquoise";
-          bar2.style.backgroundColor = "turquoise";
-        }, i*2)
       }
+      setTimeout(() => {
+        var bar1 = elems[animations[i].compare[0]];
+        var bar2 = elems[animations[i].compare[1]];
+        bar1.style.backgroundColor = "turquoise";
+        bar2.style.backgroundColor = "turquoise";
+      }, i * 3);
     }
-
   }
 
   render() {
@@ -85,7 +75,7 @@ export class SortingVis extends React.Component {
               className="bar"
               key={index}
               id={index}
-              style={{ height: `${value}px` }}
+              style={{ height: `${value}px`, width: `${barWidth}px` }}
             >
               {value}
             </div>

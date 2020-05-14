@@ -17,21 +17,3 @@ export function bubbleSortAnimations(array) {
   }
   return animations;
 }
-
-
-// for (let i = 1; i < array.length; i++) {
-//   for (let j = 0; j < i; j++) {
-//     if (array[i] < array[j]) {
-//       console.log(i + " " + j + " swapped")
-//       let temp = array[i];
-//       array[i] = array[j];
-//       array[j] = temp;
-//       swap = [i, j];
-//       animations.push(swap);
-//     }
-//     else
-//     console.log(i + " " + j + " compared but not swapped")
-//   }
-// }
-// return animations;
-// }

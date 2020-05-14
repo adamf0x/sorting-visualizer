@@ -16,46 +16,55 @@ export class SortingVis extends React.Component {
     this.generateArray();
   }
   generateArray() {
-    var max = 100;
+    var max = 500;
     var min = 10;
     var arr = [];
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 200; i++) {
       arr.push(Math.floor(Math.random() * (max - min + 1) + min));
     }
     this.setState({ array: arr });
   }
 
   bubbleSort() {
-    /*
-    let arr = this.state.array;
-    for (let i = 1; i < arr.length; i++) {
-      setTimeout(()=>{
-      for (let j = 0; j < i; j++) {
-        setTimeout(()=>{
-        if (arr[i] < arr[j]) {
-          let temp = arr[i];
-          arr[i] = arr[j];
-          arr[j] = temp;
-          this.setState({ array: arr });
-        }
-      }, i*75)
-      
-      }
-    }, i*75) 
-    }
-    */
     const animations = bubbleSortAnimations(this.state.array);
     const elems = document.getElementsByClassName("bar");
+    /*
     for (let i = 0; i < animations.length; i++) {
       setTimeout(() => {
-        var bar1 = elems[animations[i][0]];
-        var bar2 = elems[animations[i][1]];
-        var temp = bar1.style.height;
-        bar1.style.height = bar2.style.height;
-        bar2.style.height = temp;
+        var swapAnimation = animations[i].swap;
+        var bar1 = elems[animations[i].compare[0]]
+        var bar2 = elems[animations[i].compare[1]]
+        if(swapAnimation == true){
+          var temp = bar1.style.height;
+          bar1.style.height = bar2.style.height;
+          bar2.style.height = temp;
+        }else{
+          bar1.style.backgroundColor = "red"
+          bar2.style.backgroundColor = "red"
+        }
       }, i*30);
     }
-    this.setState(this.array)
+    */
+    for (let i = 0; i < animations.length; i++) {
+      if (animations[i].swap === true) {
+        setTimeout(() => {
+          var bar1 = elems[animations[i].compare[0]];
+          var bar2 = elems[animations[i].compare[1]];
+          var temp = bar1.style.height;
+          bar1.style.height = bar2.style.height;
+          bar2.style.height = temp;
+          bar1.style.backgroundColor = "red";
+          bar2.style.backgroundColor = "red";
+        }, i * 2);
+        setTimeout(()=>{
+          var bar1 = elems[animations[i].compare[0]];
+          var bar2 = elems[animations[i].compare[1]];
+          bar1.style.backgroundColor = "turquoise";
+          bar2.style.backgroundColor = "turquoise";
+        }, i*2)
+      }
+    }
+
   }
 
   render() {

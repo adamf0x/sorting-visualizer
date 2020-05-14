@@ -1,13 +1,14 @@
 .container{
     text-align: center;
+    margin-top: 150px;
 }
 .bar{
     border-radius: 30px;
     display: inline-block;
-    width: 20px;
+    width: 5px;
     color: transparent;
     background-color: turquoise;
-    margin: 0 3px;
+    margin: 0 2px;
     overflow: hidden;
 }
 

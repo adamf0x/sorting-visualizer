@@ -3,16 +3,19 @@ export function bubbleSortAnimations(array) {
 
   for (let i = 1; i < array.length; i++) {
     for (let j = 0; j < i; j++) {
-      const animation = {compare: [], swap: false };
-      animation.compare = [i, j];
-      animation.swap = false;
+      var compare = [i,j];
+      var swap = [];
       if (array[i] < array[j]) {
-        animation.swap = true;
+        swap = [i,j]
         let temp = array[i];
         array[i] = array[j];
         array[j] = temp;
       }
-      animations.push(animation);
+      //push one comparison to signify the change from one colour to another and another to signify the change back to the original colour
+      animations.push(compare);
+      animations.push(compare);
+      //push the elemnts to swap if they exist
+      animations.push(swap);
     }
   }
   return animations;

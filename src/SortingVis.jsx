@@ -1,8 +1,9 @@
 import React from "react";
 import "./App.css";
 import "./SortingVis.css";
-import { bubbleSortAnimations } from "./GetBubbleSortAnimations";
+import { bubbleSortAnimations, quickSortAnimations } from "./GetSortAnimations";
 import { Slider } from "@material-ui/core";
+import { Helmet } from "react-helmet";
 
 var numBars = 100;
 var barWidth = Math.floor(1000 * (1 / numBars));
@@ -30,7 +31,7 @@ export class SortingVis extends React.Component {
   }
 
   bubbleSort() {
-    var delay = Math.floor(1000 * (1 / (numBars + 10)));
+    var delay = Math.floor(1000 * (1 / (numBars * 2)));
     const animations = bubbleSortAnimations(this.state.array);
     for (let i = 0; i < animations.length; i++) {
       const elems = document.getElementsByClassName("bar");
@@ -67,28 +68,71 @@ export class SortingVis extends React.Component {
   }
 
   render() {
+    const title = "Sorting Visualizer";
     const { array } = this.state;
     return (
       <div>
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
         <div className="buttons">
-          <button className="action" onClick={() => this.generateArray(numBars)}>
+          <button
+            className="action"
+            onClick={() => this.generateArray(numBars)}
+          >
             generate array
           </button>
-          <button className="action" onClick={() => this.bubbleSort()}>
+          <button
+            className="action"
+            onClick={() => {
+              var e = document.getElementById("Algs");
+              var val = e.options[e.selectedIndex].value;
+              switch (val) {
+                case "Bubble Sort":
+                  this.bubbleSort();
+                  break;
+                case "Quick Sort":
+                  this.state.array = quickSortAnimations(this.state.array, 0, this.state.array.length -1);
+                  this.setState({array: this.state.array});
+                  break;
+                default:
+                  alert("select a different algorithm");
+                  break;
+              }
+            }}
+          >
             visualize sorting
           </button>
           <div className="slider">
-            <div className = 'sliderText'>Number of array elements/sorting speed:</div>
+            <div className="sliderText">
+              Number of array elements/sorting speed:
+            </div>
             <Slider
-              min={0}
+              min={1}
               step={1}
-              max={300}
-              onChange = {(e, num)=>{numBars = num; barWidth = Math.floor(1000 * (1 / numBars)); this.generateArray(numBars)}}
+              max={500}
+              onChange={(e, num) => {
+                numBars = num;
+                if (numBars < 20) {
+                  barWidth = 70;
+                } else {
+                  barWidth = Math.floor(1000 * (1 / numBars));
+                }
+                this.generateArray(numBars);
+              }}
               defaultValue={100}
               valueLabelDisplay="auto"
               aria-labelledby="non-linear-slider"
             ></Slider>
           </div>
+        </div>
+        <div className="selector">
+          <p>Choose an Algorithm:</p>
+          <select id="Algs">
+            <option value="Bubble Sort">Bubble Sort</option>
+            <option value="Quick Sort">Quick Sort</option>
+            <option value="Merge Sort">Merge Sort</option>
+          </select>
         </div>
         <div className="container">
           {array.map((value, index) => (

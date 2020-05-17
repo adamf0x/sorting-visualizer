@@ -74,14 +74,16 @@ export class SortingVis extends React.Component {
   }
 
   quickSort() {
+    //initialize a comparisson count to be used to know if the comparisson array in the animations array indicated a swap to the alternate colour or back to the original colour
     var comparecount = 0;
-    var pivotcount = 0;
     var qsdelay = Math.floor(1000 * (1 / (numBars * 2)));
+    //get the list of quick sort animations
     const animations = getQuicksortAnimations(
       this.state.array,
       0,
       this.state.array.length - 1
     );
+    //similar procedure as that of bubble sort
     for (let i = 0; i < animations.length; i++) {
       const elems = document.getElementsByClassName("bar");
       if (animations[i].length === 2) {
@@ -156,7 +158,7 @@ export class SortingVis extends React.Component {
             <Slider
               min={1}
               step={1}
-              max={350}
+              max={450}
               onChange={(e, num) => {
                 numBars = num;
                 if (numBars < 20) {

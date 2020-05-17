@@ -24,7 +24,7 @@ export class SortingVis extends React.Component {
     this.generateArray(numBars);
   }
   generateArray(numBars) {
-    var max = numBars * 3;
+    var max = numBars * 2;
     var min = 5;
     var arr = [];
     for (let i = 0; i < numBars; i++) {
@@ -156,7 +156,7 @@ export class SortingVis extends React.Component {
             <Slider
               min={1}
               step={1}
-              max={500}
+              max={350}
               onChange={(e, num) => {
                 numBars = num;
                 if (numBars < 20) {

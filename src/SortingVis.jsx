@@ -24,7 +24,12 @@ export class SortingVis extends React.Component {
     this.generateArray(numBars);
   }
   generateArray(numBars) {
-    var max = numBars * 2;
+    var max = 0;
+    if (numBars <= 50) {
+      max = 100;
+    } else {
+      max = numBars * 1.5;
+    }
     var min = 5;
     var arr = [];
     for (let i = 0; i < numBars; i++) {
@@ -156,7 +161,7 @@ export class SortingVis extends React.Component {
               Number of array elements/sorting speed:
             </div>
             <Slider
-              min={1}
+              min={2}
               step={1}
               max={450}
               onChange={(e, num) => {

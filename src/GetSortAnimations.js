@@ -21,15 +21,14 @@ export function bubbleSortAnimations(array) {
   return animations;
 }
 
+//qsanimations has to be initilized globally as to allow the partition function to add animations to it 
 var qsanimations = [];
-
 export function getQuicksortAnimations(array, left, right){
+  //make sure the qs animations array is empty before calling the quicksortanimations function
   qsanimations = [];
   quickSortAnimations(array, left, right);
   return qsanimations;
 }
-
-
 export function quickSortAnimations(array, left, right){
   var index;
   if (array.length > 1) {

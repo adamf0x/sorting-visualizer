@@ -1,7 +1,10 @@
 import React from "react";
 import "./App.css";
 import "./SortingVis.css";
-import { bubbleSortAnimations, quickSortAnimations } from "./GetSortAnimations";
+import {
+  bubbleSortAnimations,
+  getQuicksortAnimations,
+} from "./GetSortAnimations";
 import { Slider } from "@material-ui/core";
 import { Helmet } from "react-helmet";
 
@@ -66,6 +69,50 @@ export class SortingVis extends React.Component {
       }
     }
   }
+  isInteger(argument) {
+    return argument === ~~argument;
+  }
+
+  quickSort() {
+    var comparecount = 0;
+    var pivotcount = 0;
+    var qsdelay = Math.floor(1000 * (1 / (numBars * 2)));
+    const animations = getQuicksortAnimations(
+      this.state.array,
+      0,
+      this.state.array.length - 1
+    );
+    for (let i = 0; i < animations.length; i++) {
+      const elems = document.getElementsByClassName("bar");
+      if (animations[i].length === 2) {
+        comparecount++;
+        if (comparecount % 2 !== 0) {
+          setTimeout(() => {
+            var bar1 = elems[animations[i][0]];
+            var bar2 = elems[animations[i][1]];
+            bar1.style.backgroundColor = "red";
+            bar2.style.backgroundColor = "red";
+          }, i * qsdelay);
+        } else {
+          setTimeout(() => {
+            var bar1 = elems[animations[i][0]];
+            var bar2 = elems[animations[i][1]];
+            bar1.style.backgroundColor = "turquoise";
+            bar2.style.backgroundColor = "turquoise";
+          }, i * qsdelay);
+        }
+      }
+      if (animations[i].length === 3) {
+        setTimeout(() => {
+          var bar1 = elems[animations[i][0]];
+          var bar2 = elems[animations[i][1]];
+          var temp = bar1.style.height;
+          bar1.style.height = bar2.style.height;
+          bar2.style.height = temp;
+        }, i * qsdelay);
+      }
+    }
+  }
 
   render() {
     const title = "Sorting Visualizer";
@@ -92,8 +139,7 @@ export class SortingVis extends React.Component {
                   this.bubbleSort();
                   break;
                 case "Quick Sort":
-                  this.state.array = quickSortAnimations(this.state.array, 0, this.state.array.length -1);
-                  this.setState({array: this.state.array});
+                  this.quickSort();
                   break;
                 default:
                   alert("select a different algorithm");

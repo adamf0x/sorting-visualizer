@@ -21,49 +21,77 @@ export function bubbleSortAnimations(array) {
   return animations;
 }
 
+var qsanimations = [];
 
-export function quickSortAnimations(array, lo, hi) {
+export function getQuicksortAnimations(array, left, right){
+  qsanimations = [];
+  quickSortAnimations(array, left, right);
+  return qsanimations;
+}
+
+
+export function quickSortAnimations(array, left, right){
   var index;
   if (array.length > 1) {
-    index = partition(array, lo, hi); //index returned from partition
-    console.log("index: " + index);
-    console.log("lower: " + lo)
-    console.log("higher: " + hi)
-    if (lo < index - 1) {
+    index = partition(array, left, right); //index returned from partition
+    if (left < index - 1) {
       //more elements on the left side of the pivot
-      quickSortAnimations(array, lo, index - 1);
+      quickSortAnimations(array, left, index - 1);
     }
-    if (index < hi) {
+    if (index < right) {
       //more elements on the right side of the pivot
-      quickSortAnimations(array, index, hi);
+      quickSortAnimations(array, index, right);
     }
   }
-  console.log(array);
   return array;
 }
+
 
 function swap(items, leftIndex, rightIndex) {
   var temp = items[leftIndex];
   items[leftIndex] = items[rightIndex];
   items[rightIndex] = temp;
+  
 }
 
 function partition(items, left, right) {
+  var compare = [];
+  var pivotindex;
   var pivot = items[Math.floor((right + left) / 2)], //middle element
   i = left, //left pointer
   j = right; //right pointer
+  pivotindex = items.indexOf(pivot);
   while (i <= j) {
+    compare = [i,j];
+    qsanimations.push(compare);
+    qsanimations.push(compare);
+    qsanimations.push(pivotindex);
+    qsanimations.push(pivotindex);
     while (items[i] < pivot) {
       i++;
+      compare = [i,j];
+      qsanimations.push(compare);
+      qsanimations.push(compare);
+      qsanimations.push(pivotindex);
+      qsanimations.push(pivotindex);
     }
     while (items[j] > pivot) {
       j--;
+      compare = [i,j];
+      qsanimations.push(compare);
+      qsanimations.push(compare);
+      qsanimations.push(pivotindex);
+      qsanimations.push(pivotindex);
     }
+    var swaps = [];
     if (i <= j) {
       swap(items, i, j); //sawpping two elements
+      swaps = [i,j, 1]
       i++;
       j--;
     }
+    qsanimations.push(swaps);
+    qsanimations.push(pivotindex);
   }
   return i;
 }

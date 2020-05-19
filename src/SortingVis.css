@@ -1,12 +1,14 @@
 .container{
     text-align: center;
     margin-top: 50px;
+    color:white;
 }
+
 .bar{
     border-radius: 30px;
     display: inline-block;
     color: transparent;
-    background-color: turquoise;
+    background-color: pink;
     margin: 0 1px;
     overflow: hidden;
 }
@@ -14,6 +16,7 @@
 .buttons{
     height: 100px;
     background-color: black;
+    color:white;
 }
 
 .action{
@@ -21,9 +24,10 @@
     padding: 15px 32px;
     border: none;
     text-align: center;
-    background-color: turquoise;
+    background-color: pink;
     display: inline-block;
     font-size: 16px;
+    color:white;
 }
 .slider{
     display: inline-block;
@@ -40,10 +44,11 @@
     font-size: 15px;
 }
 #Algs{
-    background-color: turquoise;
+    background-color: pink;
     border: none;
     height: 40px;
     width: 200px;
     margin-bottom: 20px;
     font-size: 20px;
+    color:white;
 }

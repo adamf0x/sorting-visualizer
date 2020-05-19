@@ -4,12 +4,14 @@ import "./SortingVis.css";
 import {
   bubbleSortAnimations,
   getQuicksortAnimations,
+  getMergesortAnimations,
 } from "./GetSortAnimations";
 import { Slider } from "@material-ui/core";
 import { Helmet } from "react-helmet";
 
 var numBars = 100;
 var barWidth = Math.floor(1000 * (1 / numBars));
+var barColor = "transparent";
 
 export class SortingVis extends React.Component {
   constructor(props) {
@@ -30,7 +32,7 @@ export class SortingVis extends React.Component {
     } else {
       max = numBars * 1.5;
     }
-    var min = 5;
+    var min = 20;
     var arr = [];
     for (let i = 0; i < numBars; i++) {
       arr.push(Math.floor(Math.random() * (max - min + 1) + min));
@@ -56,8 +58,8 @@ export class SortingVis extends React.Component {
         } else {
           //return the elements that were altered to the original colour
           setTimeout(() => {
-            bar1.style.backgroundColor = "turquoise";
-            bar2.style.backgroundColor = "turquoise";
+            bar1.style.backgroundColor = "pink";
+            bar2.style.backgroundColor = "pink";
           }, i * delay);
         }
         //if the loop is on an element that signifies a swap of two bars in the array, swap their heights
@@ -68,7 +70,9 @@ export class SortingVis extends React.Component {
             var bar2 = elems[animations[i][1]];
             var temp = bar1.style.height;
             bar1.style.height = `${bar2.style.height}`;
+            bar1.textContent = `${bar2.style.height}`.replace("px", "");
             bar2.style.height = `${temp}`;
+            bar2.textContent = `${temp}`.replace("px", "");
           }, i * delay);
         }
       }
@@ -104,8 +108,8 @@ export class SortingVis extends React.Component {
           setTimeout(() => {
             var bar1 = elems[animations[i][0]];
             var bar2 = elems[animations[i][1]];
-            bar1.style.backgroundColor = "turquoise";
-            bar2.style.backgroundColor = "turquoise";
+            bar1.style.backgroundColor = "pink";
+            bar2.style.backgroundColor = "pink";
           }, i * qsdelay);
         }
       }
@@ -114,9 +118,45 @@ export class SortingVis extends React.Component {
           var bar1 = elems[animations[i][0]];
           var bar2 = elems[animations[i][1]];
           var temp = bar1.style.height;
-          bar1.style.height = bar2.style.height;
-          bar2.style.height = temp;
+          bar1.style.height = `${bar2.style.height}`;
+          bar1.textContent = `${bar2.style.height}`.replace("px", "");
+          bar2.style.height = `${temp}`;
+          bar2.textContent = `${temp}`.replace("px", "");
         }, i * qsdelay);
+      }
+    }
+  }
+
+  mergeSort() {
+    const animations = getMergesortAnimations(
+      this.state.array,
+      this.state.array.slice(),
+      0,
+      this.state.array.length - 1
+    );
+    var mergedelay = Math.floor(1000 * (1 / (numBars * 2)));
+    var compareCount = 0;
+    for (let i = 0; i < animations.length; i++) {
+      const elems = document.getElementsByClassName("bar");
+      if (animations[i].length !== 3) {
+        compareCount++;
+        if (compareCount % 2 !== 0) {
+          console.log(animations[i]);
+          setTimeout(() => {
+            var bar1 = elems[animations[i][0]];
+            var bar2 = elems[animations[i][1]];
+            bar1.style.backgroundColor = "red";
+            bar2.style.backgroundColor = "red";
+          }, i*mergedelay);
+        } else {
+          console.log(animations[i]);
+          setTimeout(()=>{
+          var bar1 = elems[animations[i][0]];
+          var bar2 = elems[animations[i][1]];
+          bar1.style.backgroundColor = "pink";
+          bar2.style.backgroundColor = "pink";
+        }, i*mergedelay);
+        }
       }
     }
   }
@@ -148,6 +188,9 @@ export class SortingVis extends React.Component {
                 case "Quick Sort":
                   this.quickSort();
                   break;
+                case "Merge Sort":
+                  this.mergeSort();
+                  break;
                 default:
                   alert("select a different algorithm");
                   break;
@@ -166,6 +209,11 @@ export class SortingVis extends React.Component {
               max={450}
               onChange={(e, num) => {
                 numBars = num;
+                if (num <= 30) {
+                  barColor = "black";
+                } else {
+                  barColor = "transparent";
+                }
                 if (numBars < 20) {
                   barWidth = 70;
                 } else {
@@ -192,7 +240,11 @@ export class SortingVis extends React.Component {
             <div
               className="bar"
               key={index}
-              style={{ height: `${value}px`, width: `${barWidth}px` }}
+              style={{
+                height: `${value}px`,
+                width: `${barWidth}px`,
+                color: `${barColor}`,
+              }}
             >
               {value}
             </div>

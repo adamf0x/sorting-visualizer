@@ -56,7 +56,7 @@ function swap(items, leftIndex, rightIndex) {
 function partition(items, left, right) {
   var compare = [];
   var pivotindex;
-  var pivot = items[Math.floor((right + left) / 2)], //middle element
+  var pivot = items[Math.floor((right + left) / 2)], //the partition is the middle element of the array
   i = left, //left pointer
   j = right; //right pointer
   pivotindex = items.indexOf(pivot);
@@ -96,4 +96,67 @@ function partition(items, left, right) {
     qsanimations.push(pivotindex);
   }
   return i;
+}
+
+var mergeanimations = [];
+export function getMergesortAnimations(array){
+  mergeanimations = [];
+  mergeSort(array,array.slice(), 0, array.length-1);
+  console.log(mergeanimations)
+  return mergeanimations;
+}
+
+// Sort array arr [low..high] using auxiliary array aux
+function mergeSort(arr, aux, low, high)
+{
+  // Base case
+  if (high === low) {	// if run size == 1
+    return arr;
+  }
+
+  // find mid point
+  var mid = Math.floor(low+(high-low)/2);
+
+  // recursively split runs into two halves until run size == 1,
+  // then merge them and return back up the call chain
+
+  mergeSort(arr, aux, low, mid);	  // split / merge left  half
+  mergeSort(arr, aux, mid + 1, high); // split / merge right half
+  merge(arr, aux, low, mid, high);	// merge the two half runs
+}
+
+// Merge two sorted sub-arrays arr[low .. mid] and arr[mid + 1 .. high]
+function merge(arr, aux, low, mid, high)
+{
+  var loop = [];
+  var k = low, i = low, j = mid + 1;
+  // While there are elements in the left and right runs
+  while (i <= mid && j <= high)
+  {
+    if (arr[i] <= arr[j]) {
+      loop = [i, j];
+      mergeanimations.push(loop);
+      mergeanimations.push(loop);
+      aux[k++] = arr[i++];
+      mergeanimations.push([i, aux[k], 1])
+    }
+    else {
+      loop = [i, j];
+      mergeanimations.push(loop);
+      mergeanimations.push(loop);
+      mergeanimations.push([j, aux[k], 1])
+      aux[k++] = arr[j++];
+    }
+  }
+
+  // Copy remaining elements
+  while (i <= mid) {
+    aux[k++] = arr[i++];
+  }
+  // No need to copy the second half
+
+  // copy back to the original array to reflect sorted order
+  for (i = low; i <= high; i++) {
+    arr[i] = aux[i];
+  }
 }

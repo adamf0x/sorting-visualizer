@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import "./SortingVis.css";
 import {
@@ -8,15 +8,17 @@ import {
 } from "./GetSortAnimations";
 import { Slider } from "@material-ui/core";
 import { Helmet } from "react-helmet";
+import Modal from "react-modal";
 
 var numBars = 100;
 var barWidth = Math.floor(1000 * (1 / numBars));
 var barColor = "transparent";
+var barBackground = "pink";
+var disableButtons = false;
 
 export class SortingVis extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       array: [],
     };
@@ -39,10 +41,17 @@ export class SortingVis extends React.Component {
     }
     this.setState({ array: arr });
   }
+  setColour() {
+    const elems = document.getElementsByClassName("bar");
+    for (var i of elems) {
+      i.style.backgroundColor = barBackground;
+    }
+  }
 
   bubbleSort() {
     var delay = Math.floor(1000 * (1 / (numBars * 2)));
     const animations = bubbleSortAnimations(this.state.array);
+    disableButtons = true;
     for (let i = 0; i < animations.length; i++) {
       const elems = document.getElementsByClassName("bar");
       //if the loop is not on a element that signifies a swap
@@ -76,10 +85,17 @@ export class SortingVis extends React.Component {
           }, i * delay);
         }
       }
+      if (i === animations.length - 1) {
+        setTimeout(() => {
+          disableButtons = false;
+          for (let j = 0; j < elems.length; j++) {
+            setTimeout(() => {
+              elems[j].style.backgroundColor = "lime";
+            }, j * delay);
+          }
+        }, delay * animations.length);
+      }
     }
-  }
-  isInteger(argument) {
-    return argument === ~~argument;
   }
 
   quickSort() {
@@ -124,17 +140,26 @@ export class SortingVis extends React.Component {
           bar2.textContent = `${temp}`.replace("px", "");
         }, i * qsdelay);
       }
+      if (i === animations.length - 1) {
+        setTimeout(() => {
+          for (let j = 0; j < elems.length; j++) {
+            setTimeout(() => {
+              elems[j].style.backgroundColor = "lime";
+            }, j * qsdelay);
+          }
+        }, qsdelay * animations.length);
+      }
     }
   }
 
   mergeSort() {
     const animations = getMergeSortAnimations(this.state.array);
-    console.log(animations)
+    console.log(animations);
     var mergedelay = Math.floor(1000 * (1 / (numBars * 2)));
     var compareCount = 0;
     for (let i = 0; i < animations.length; i++) {
       const elems = document.getElementsByClassName("bar");
-      if(animations.length === 0){
+      if (animations.length === 0) {
         continue;
       }
       if (animations[i].length !== 3) {
@@ -162,6 +187,15 @@ export class SortingVis extends React.Component {
           barToOverwrite.textContent = `${height}`.replace("px", "");
         }, i * mergedelay);
       }
+      if (i === animations.length - 1) {
+        setTimeout(() => {
+          for (let j = 0; j < elems.length; j++) {
+            setTimeout(() => {
+              elems[j].style.backgroundColor = "lime";
+            }, j * mergedelay);
+          }
+        }, mergedelay * animations.length);
+      }
     }
   }
 
@@ -176,7 +210,10 @@ export class SortingVis extends React.Component {
         <div className="buttons">
           <button
             className="action"
-            onClick={() => this.generateArray(numBars)}
+            onClick={() => {
+              this.setColour();
+              this.generateArray(numBars);
+            }}
           >
             generate array
           </button>
@@ -187,14 +224,15 @@ export class SortingVis extends React.Component {
               var val = e.options[e.selectedIndex].value;
               switch (val) {
                 case "Bubble Sort":
+                  this.setColour();
                   this.bubbleSort();
                   break;
                 case "Quick Sort":
+                  this.setColour();
                   this.quickSort();
                   break;
                 case "Merge Sort":
-                  // this.setState({array:getMergesortAnimations(this.state.array)});
-                  // console.log(this.state.array)
+                  this.setColour();
                   this.mergeSort();
                   break;
                 default:
@@ -226,6 +264,7 @@ export class SortingVis extends React.Component {
                   barWidth = Math.floor(1000 * (1 / numBars));
                 }
                 this.generateArray(numBars);
+                this.setColour();
               }}
               defaultValue={100}
               valueLabelDisplay="auto"
@@ -250,6 +289,7 @@ export class SortingVis extends React.Component {
                 height: `${value}px`,
                 width: `${barWidth}px`,
                 color: `${barColor}`,
+                backgroundColor: `${barBackground}`,
               }}
             >
               {value}
@@ -260,3 +300,4 @@ export class SortingVis extends React.Component {
     );
   }
 }
+

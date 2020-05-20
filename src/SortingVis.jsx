@@ -4,7 +4,7 @@ import "./SortingVis.css";
 import {
   bubbleSortAnimations,
   getQuicksortAnimations,
-  getMergesortAnimations,
+  getMergeSortAnimations,
 } from "./GetSortAnimations";
 import { Slider } from "@material-ui/core";
 import { Helmet } from "react-helmet";
@@ -128,35 +128,39 @@ export class SortingVis extends React.Component {
   }
 
   mergeSort() {
-    const animations = getMergesortAnimations(
-      this.state.array,
-      this.state.array.slice(),
-      0,
-      this.state.array.length - 1
-    );
+    const animations = getMergeSortAnimations(this.state.array);
+    console.log(animations)
     var mergedelay = Math.floor(1000 * (1 / (numBars * 2)));
     var compareCount = 0;
     for (let i = 0; i < animations.length; i++) {
       const elems = document.getElementsByClassName("bar");
+      if(animations.length === 0){
+        continue;
+      }
       if (animations[i].length !== 3) {
         compareCount++;
         if (compareCount % 2 !== 0) {
-          console.log(animations[i]);
           setTimeout(() => {
             var bar1 = elems[animations[i][0]];
             var bar2 = elems[animations[i][1]];
             bar1.style.backgroundColor = "red";
             bar2.style.backgroundColor = "red";
-          }, i*mergedelay);
+          }, i * mergedelay);
         } else {
-          console.log(animations[i]);
-          setTimeout(()=>{
-          var bar1 = elems[animations[i][0]];
-          var bar2 = elems[animations[i][1]];
-          bar1.style.backgroundColor = "pink";
-          bar2.style.backgroundColor = "pink";
-        }, i*mergedelay);
+          setTimeout(() => {
+            var bar1 = elems[animations[i][0]];
+            var bar2 = elems[animations[i][1]];
+            bar1.style.backgroundColor = "pink";
+            bar2.style.backgroundColor = "pink";
+          }, i * mergedelay);
         }
+      } else {
+        setTimeout(() => {
+          var barToOverwrite = elems[animations[i][0]];
+          var height = animations[i][1];
+          barToOverwrite.style.height = `${height}px`;
+          barToOverwrite.textContent = `${height}`.replace("px", "");
+        }, i * mergedelay);
       }
     }
   }
@@ -189,6 +193,8 @@ export class SortingVis extends React.Component {
                   this.quickSort();
                   break;
                 case "Merge Sort":
+                  // this.setState({array:getMergesortAnimations(this.state.array)});
+                  // console.log(this.state.array)
                   this.mergeSort();
                   break;
                 default:
@@ -204,7 +210,7 @@ export class SortingVis extends React.Component {
               Number of array elements/sorting speed:
             </div>
             <Slider
-              min={2}
+              min={3}
               step={1}
               max={450}
               onChange={(e, num) => {

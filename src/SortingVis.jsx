@@ -154,7 +154,6 @@ export class SortingVis extends React.Component {
 
   mergeSort() {
     const animations = getMergeSortAnimations(this.state.array);
-    console.log(animations);
     var mergedelay = Math.floor(1000 * (1 / (numBars * 2)));
     var compareCount = 0;
     for (let i = 0; i < animations.length; i++) {
@@ -300,4 +299,3 @@ export class SortingVis extends React.Component {
     );
   }
 }
-

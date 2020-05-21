@@ -55,3 +55,8 @@
 .modalheader{
     text-align: center;
 }
+.desc{
+    background-color: pink;
+    margin-left: 30%;
+    margin-right: 30%;
+}

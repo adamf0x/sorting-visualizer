@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { SortingVis } from "./SortingVis";
 import "./App.css";
-import { modal } from "./modal";
 import Modal from "react-modal";
 import styles from "./SortingVis.css";
 
@@ -13,7 +12,6 @@ const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-    color: "pink",
   },
 };
 

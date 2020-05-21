@@ -14,6 +14,7 @@ var numBars = 100;
 var barWidth = Math.floor(1000 * (1 / numBars));
 var barColor = "transparent";
 var barBackground = "pink";
+var sliderDisabled = false;
 
 export class SortingVis extends React.Component {
   constructor(props) {
@@ -47,9 +48,30 @@ export class SortingVis extends React.Component {
     }
   }
 
+  disableComponents(time){
+    const buttons = document.getElementsByClassName("action");
+    const dropdown = document.getElementById("Algs");
+
+    sliderDisabled = true;
+    dropdown.disabled = true;
+    for(var i of buttons){
+      i.disabled = true;
+    }
+    console.log("disabled");
+    setTimeout(()=>{
+      console.log("enabling")
+      dropdown.disabled = false;
+      sliderDisabled = false;
+      for(var i of buttons){
+        i.disabled = false;
+      }
+    },time)
+  }
+
   bubbleSort() {
     var delay = Math.floor(1000 * (1 / (numBars * 2)));
     const animations = bubbleSortAnimations(this.state.array);
+    this.disableComponents(animations.length*delay);
     for (let i = 0; i < animations.length; i++) {
       const elems = document.getElementsByClassName("bar");
       //if the loop is not on a element that signifies a swap
@@ -105,6 +127,7 @@ export class SortingVis extends React.Component {
       0,
       this.state.array.length - 1
     );
+    this.disableComponents(animations.length*qsdelay);
     //similar procedure as that of bubble sort
     for (let i = 0; i < animations.length; i++) {
       const elems = document.getElementsByClassName("bar");
@@ -153,6 +176,7 @@ export class SortingVis extends React.Component {
     const animations = getMergeSortAnimations(this.state.array);
     var mergedelay = Math.floor(1000 * (1 / (numBars * 2)));
     var compareCount = 0;
+    this.disableComponents(animations.length*mergedelay);
     for (let i = 0; i < animations.length; i++) {
       const elems = document.getElementsByClassName("bar");
       if (animations.length === 0) {
@@ -247,7 +271,11 @@ export class SortingVis extends React.Component {
               min={3}
               step={1}
               max={450}
+              disabled={sliderDisabled}
               onChange={(e, num) => {
+                if(sliderDisabled === true){
+                  return;
+                }
                 numBars = num;
                 if (num <= 30) {
                   barColor = "black";

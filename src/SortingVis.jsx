@@ -14,7 +14,6 @@ var numBars = 100;
 var barWidth = Math.floor(1000 * (1 / numBars));
 var barColor = "transparent";
 var barBackground = "pink";
-var disableButtons = false;
 
 export class SortingVis extends React.Component {
   constructor(props) {
@@ -51,7 +50,6 @@ export class SortingVis extends React.Component {
   bubbleSort() {
     var delay = Math.floor(1000 * (1 / (numBars * 2)));
     const animations = bubbleSortAnimations(this.state.array);
-    disableButtons = true;
     for (let i = 0; i < animations.length; i++) {
       const elems = document.getElementsByClassName("bar");
       //if the loop is not on a element that signifies a swap
@@ -87,7 +85,6 @@ export class SortingVis extends React.Component {
       }
       if (i === animations.length - 1) {
         setTimeout(() => {
-          disableButtons = false;
           for (let j = 0; j < elems.length; j++) {
             setTimeout(() => {
               elems[j].style.backgroundColor = "lime";
@@ -273,7 +270,10 @@ export class SortingVis extends React.Component {
         </div>
         <div className="selector">
           <p>Choose an Algorithm:</p>
-          <select id="Algs">
+          <select id="Algs" onChange={()=>{
+            this.generateArray(numBars);
+            this.setColour();
+          }}>
             <option value="Bubble Sort">Bubble Sort</option>
             <option value="Quick Sort">Quick Sort</option>
             <option value="Merge Sort">Merge Sort</option>

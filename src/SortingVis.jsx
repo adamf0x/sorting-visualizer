@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import "./SortingVis.css";
 import {
@@ -8,13 +8,16 @@ import {
 } from "./GetSortAnimations";
 import { Slider } from "@material-ui/core";
 import { Helmet } from "react-helmet";
-import Modal from "react-modal";
+
+var primary = "pink";
+var secondary = "red";
+var tertiary = "lime"
 
 var numBars = 100;
 var barWidth = Math.floor(1000 * (1 / numBars));
 var barColor = "transparent";
-var barBackground = "pink";
 var sliderDisabled = false;
+
 
 export class SortingVis extends React.Component {
   constructor(props) {
@@ -43,35 +46,44 @@ export class SortingVis extends React.Component {
   }
   setColour() {
     const elems = document.getElementsByClassName("bar");
+    const buttons = document.getElementsByClassName("action");
+    const dropdown = document.getElementById("Algs");
+    dropdown.style.backgroundColor = primary;
     for (var i of elems) {
-      i.style.backgroundColor = barBackground;
+      i.style.backgroundColor = primary;
+    }
+    for(var j of buttons){
+      j.style.backgroundColor = primary;
     }
   }
+  setColorScheme(color1, color2, color3) {
+    primary = color1;
+    secondary = color2;
+    tertiary = color3;
+  }
 
-  disableComponents(time){
+  disableComponents(time) {
     const buttons = document.getElementsByClassName("action");
     const dropdown = document.getElementById("Algs");
 
     sliderDisabled = true;
     dropdown.disabled = true;
-    for(var i of buttons){
+    for (var i of buttons) {
       i.disabled = true;
     }
-    console.log("disabled");
-    setTimeout(()=>{
-      console.log("enabling")
+    setTimeout(() => {
       dropdown.disabled = false;
       sliderDisabled = false;
-      for(var i of buttons){
+      for (var i of buttons) {
         i.disabled = false;
       }
-    },time)
+    }, time);
   }
 
   bubbleSort() {
     var delay = Math.floor(1000 * (1 / (numBars * 2)));
     const animations = bubbleSortAnimations(this.state.array);
-    this.disableComponents(animations.length*delay);
+    this.disableComponents(animations.length * delay);
     for (let i = 0; i < animations.length; i++) {
       const elems = document.getElementsByClassName("bar");
       //if the loop is not on a element that signifies a swap
@@ -81,14 +93,14 @@ export class SortingVis extends React.Component {
         //setting the elements to alternate colour
         if (i % 3 === 0) {
           setTimeout(() => {
-            bar1.style.backgroundColor = "red";
-            bar2.style.backgroundColor = "red";
+            bar1.style.backgroundColor = secondary;
+            bar2.style.backgroundColor = secondary;
           }, i * delay);
         } else {
           //return the elements that were altered to the original colour
           setTimeout(() => {
-            bar1.style.backgroundColor = "pink";
-            bar2.style.backgroundColor = "pink";
+            bar1.style.backgroundColor = primary;
+            bar2.style.backgroundColor = primary;
           }, i * delay);
         }
         //if the loop is on an element that signifies a swap of two bars in the array, swap their heights
@@ -109,7 +121,7 @@ export class SortingVis extends React.Component {
         setTimeout(() => {
           for (let j = 0; j < elems.length; j++) {
             setTimeout(() => {
-              elems[j].style.backgroundColor = "lime";
+              elems[j].style.backgroundColor = tertiary;
             }, j * delay);
           }
         }, delay * animations.length);
@@ -127,7 +139,7 @@ export class SortingVis extends React.Component {
       0,
       this.state.array.length - 1
     );
-    this.disableComponents(animations.length*qsdelay);
+    this.disableComponents(animations.length * qsdelay);
     //similar procedure as that of bubble sort
     for (let i = 0; i < animations.length; i++) {
       const elems = document.getElementsByClassName("bar");
@@ -137,15 +149,15 @@ export class SortingVis extends React.Component {
           setTimeout(() => {
             var bar1 = elems[animations[i][0]];
             var bar2 = elems[animations[i][1]];
-            bar1.style.backgroundColor = "red";
-            bar2.style.backgroundColor = "red";
+            bar1.style.backgroundColor = secondary;
+            bar2.style.backgroundColor = secondary;
           }, i * qsdelay);
         } else {
           setTimeout(() => {
             var bar1 = elems[animations[i][0]];
             var bar2 = elems[animations[i][1]];
-            bar1.style.backgroundColor = "pink";
-            bar2.style.backgroundColor = "pink";
+            bar1.style.backgroundColor = primary;
+            bar2.style.backgroundColor = primary;
           }, i * qsdelay);
         }
       }
@@ -164,7 +176,7 @@ export class SortingVis extends React.Component {
         setTimeout(() => {
           for (let j = 0; j < elems.length; j++) {
             setTimeout(() => {
-              elems[j].style.backgroundColor = "lime";
+              elems[j].style.backgroundColor = tertiary;
             }, j * qsdelay);
           }
         }, qsdelay * animations.length);
@@ -176,7 +188,7 @@ export class SortingVis extends React.Component {
     const animations = getMergeSortAnimations(this.state.array);
     var mergedelay = Math.floor(1000 * (1 / (numBars * 2)));
     var compareCount = 0;
-    this.disableComponents(animations.length*mergedelay);
+    this.disableComponents(animations.length * mergedelay);
     for (let i = 0; i < animations.length; i++) {
       const elems = document.getElementsByClassName("bar");
       if (animations.length === 0) {
@@ -188,15 +200,15 @@ export class SortingVis extends React.Component {
           setTimeout(() => {
             var bar1 = elems[animations[i][0]];
             var bar2 = elems[animations[i][1]];
-            bar1.style.backgroundColor = "red";
-            bar2.style.backgroundColor = "red";
+            bar1.style.backgroundColor = secondary;
+            bar2.style.backgroundColor = secondary;
           }, i * mergedelay);
         } else {
           setTimeout(() => {
             var bar1 = elems[animations[i][0]];
             var bar2 = elems[animations[i][1]];
-            bar1.style.backgroundColor = "pink";
-            bar2.style.backgroundColor = "pink";
+            bar1.style.backgroundColor = primary;
+            bar2.style.backgroundColor = primary;
           }, i * mergedelay);
         }
       } else {
@@ -211,7 +223,7 @@ export class SortingVis extends React.Component {
         setTimeout(() => {
           for (let j = 0; j < elems.length; j++) {
             setTimeout(() => {
-              elems[j].style.backgroundColor = "lime";
+              elems[j].style.backgroundColor = tertiary;
             }, j * mergedelay);
           }
         }, mergedelay * animations.length);
@@ -227,6 +239,38 @@ export class SortingVis extends React.Component {
         <Helmet>
           <title>{title}</title>
         </Helmet>
+        <div className="colorButtons">
+          <button
+            className="colorButton"
+            style={{ backgroundColor: `pink` }}
+            onClick={() => {
+              this.setColorScheme("pink", "red", "lime");
+              this.setColour();
+            }}
+          >
+            color scheme 1
+          </button>
+          <button
+            className="colorButton"
+            style={{ backgroundColor: "#83BDFF" }}
+            onClick={() => {
+              this.setColorScheme("#83BDFF", "#7C00FF", "#CBBAED");
+              this.setColour();
+            }}
+          >
+            color scheme 2
+          </button>
+          <button
+            className="colorButton"
+            style={{ backgroundColor: "#FF5F00" }}
+            onClick={() => {
+              this.setColorScheme("#FF5F00", "black", "#00A6ED");
+              this.setColour();
+            }}
+          >
+            color scheme 3
+          </button>
+        </div>
         <div className="buttons">
           <button
             className="action"
@@ -273,7 +317,7 @@ export class SortingVis extends React.Component {
               max={450}
               disabled={sliderDisabled}
               onChange={(e, num) => {
-                if(sliderDisabled === true){
+                if (sliderDisabled === true) {
                   return;
                 }
                 numBars = num;
@@ -298,10 +342,13 @@ export class SortingVis extends React.Component {
         </div>
         <div className="selector">
           <p>Choose an Algorithm:</p>
-          <select id="Algs" onChange={()=>{
-            this.generateArray(numBars);
-            this.setColour();
-          }}>
+          <select
+            id="Algs"
+            onChange={() => {
+              this.generateArray(numBars);
+              this.setColour();
+            }}
+          >
             <option value="Bubble Sort">Bubble Sort</option>
             <option value="Quick Sort">Quick Sort</option>
             <option value="Merge Sort">Merge Sort</option>
@@ -316,7 +363,7 @@ export class SortingVis extends React.Component {
                 height: `${value}px`,
                 width: `${barWidth}px`,
                 color: `${barColor}`,
-                backgroundColor: `${barBackground}`,
+                backgroundColor: `${primary}`,
               }}
             >
               {value}

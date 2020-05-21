@@ -233,11 +233,14 @@ export class SortingVis extends React.Component {
 
   render() {
     const title = "Sorting Visualizer";
+    const desc = "A sorting visualizer created using React";
     const { array } = this.state;
     return (
       <div>
         <Helmet>
           <title>{title}</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+          <meta name="description" content={desc}></meta>
         </Helmet>
         <div className="colorButtons">
           <button

@@ -238,9 +238,7 @@ export class SortingVis extends React.Component {
     return (
       <div>
         <Helmet>
-          <title>{title}</title>
           <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
-          <meta name="description" content={desc}></meta>
         </Helmet>
         <div className="colorButtons">
           <button
